@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "LocalDrop Live",
+  "description": "Serve dropped local files from localhost and create an explicit temporary public link.",
+  "version": "1.0.0",
+  "minimum_chrome_version": "105",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1o/t87JeQquRQD/i7maGXYwnNzQ+SAs/zbUQdSPqxB0XVsyjo68zj+ODg5rA4wIK0TT1wUvjPso7uWoWJthbdIN0Zh7k9gt3eJYOuFJ+f9Spxe5v4PPx+mUh86ws2vBHokTpKsHDStCFXqILo/UaTfwopsEe8XV9X62UGTg4DVPjrxn0V7H09Cz//D2zUwHMkWuA8GbtE6glvzT9Gs8kx+BfThfSW1ql08F/ja1AKRqwX9YsWAytORh/v1iOgT+qrHpD6wu0TKAUHVM5JzDFEifmIipaf9YgdOF/eqjqGmWRUIh3RCjUqa2rEH7vmQThDN+PNE8Spa8JnfWOZ2zb0wIDAQAB",
+  "permissions": ["nativeMessaging", "storage", "clipboardWrite"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "Open LocalDrop Live"
+  },
+  "icons": {
+    "16": "assets/icon-16.png",
+    "32": "assets/icon-32.png",
+    "48": "assets/icon-48.png",
+    "128": "assets/icon-128.png"
+  }
+}

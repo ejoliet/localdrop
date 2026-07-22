@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LocalDrop Live</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <img src="assets/icon-48.png" width="38" height="38" alt="">
+        <div><h1>LocalDrop Live</h1><p>Temporary local hosting. Public only when you start it.</p></div>
+      </div>
+      <div class="host-state"><span id="hostDot" class="dot"></span><span id="hostLabel">Checking companion…</span></div>
+    </header>
+
+    <section id="setupCard" class="card setup hidden" aria-live="polite">
+      <h2>Native companion required</h2>
+      <p>Chrome extensions cannot bind a local TCP port. Install the included native companion, then reload this page.</p>
+      <div class="code-row"><code>./scripts/install-native.sh</code><button class="secondary small" data-copy="./scripts/install-native.sh">Copy</button></div>
+      <p class="muted">For public links, install <code>cloudflared</code>. On macOS: <code>brew install cloudflared</code>.</p>
+      <button id="retryHost" class="primary">Retry connection</button>
+    </section>
+
+    <section id="dropCard" class="card">
+      <div id="dropZone" class="drop-zone" tabindex="0" role="button" aria-label="Drop files or choose files">
+        <div class="drop-icon">⇩</div>
+        <h2>Drop files or a website folder</h2>
+        <p>Files are copied into a temporary local session. Nothing is public yet.</p>
+        <div class="button-row">
+          <button id="chooseFiles" class="primary" type="button">Choose files</button>
+          <button id="chooseFolder" class="secondary" type="button">Choose folder</button>
+        </div>
+      </div>
+      <input id="fileInput" type="file" multiple hidden>
+      <input id="folderInput" type="file" multiple webkitdirectory hidden>
+
+      <div id="selection" class="selection hidden">
+        <div class="selection-head">
+          <div><strong id="selectionSummary"></strong><span id="selectionDetail" class="muted"></span></div>
+          <button id="clearSelection" class="text-button">Clear</button>
+        </div>
+        <div id="fileList" class="file-list"></div>
+        <div class="options">
+          <label><input id="spaFallback" type="checkbox"> SPA fallback to root <code>index.html</code></label>
+          <label><input id="allowCors" type="checkbox"> Allow cross-origin GET requests</label>
+        </div>
+        <button id="serveButton" class="primary wide">Start local server</button>
+      </div>
+    </section>
+
+    <section id="progressCard" class="card hidden" aria-live="polite">
+      <div class="progress-title"><h2 id="progressTitle">Copying files…</h2><span id="progressPercent">0%</span></div>
+      <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
+      <p id="progressDetail" class="muted"></p>
+      <button id="cancelUpload" class="secondary">Cancel</button>
+    </section>
+
+    <section id="liveCard" class="card hidden">
+      <div class="live-head">
+        <div><h2>Server live</h2><p id="liveStats" class="muted"></p></div>
+        <span id="publicBadge" class="badge local">Local only</span>
+      </div>
+
+      <label class="field-label" for="localUrl">Local link</label>
+      <div class="link-row">
+        <input id="localUrl" readonly>
+        <button id="copyLocal" class="secondary">Copy</button>
+        <button id="openLocal" class="secondary">Open</button>
+      </div>
+
+      <div id="publicSection" class="public-section">
+        <div id="tunnelUnavailable" class="notice hidden">
+          <strong>Public links unavailable.</strong> Install <code>cloudflared</code>, then restart the native companion.
+        </div>
+        <button id="startTunnel" class="primary wide">Create temporary public link</button>
+        <div id="publicLinkWrap" class="hidden">
+          <label class="field-label" for="publicUrl">Public capability link</label>
+          <div class="link-row">
+            <input id="publicUrl" readonly>
+            <button id="copyPublic" class="secondary">Copy</button>
+            <button id="openPublic" class="secondary">Open</button>
+          </div>
+          <p class="warning">Anyone with this unguessable link can access the files while the tunnel is running. Traffic passes through Cloudflare.</p>
+          <button id="stopTunnel" class="danger">Stop public link</button>
+        </div>
+      </div>
+
+      <div class="server-actions">
+        <button id="newSession" class="secondary">Replace files</button>
+        <button id="stopServer" class="danger">Stop and delete temporary files</button>
+      </div>
+    </section>
+
+    <section id="activityCard" class="card hidden">
+      <div class="activity-head"><h2>Requests</h2><button id="clearLogs" class="text-button">Clear</button></div>
+      <div id="activityEmpty" class="empty">No requests yet.</div>
+      <div id="activityLog" class="activity-log"></div>
+    </section>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
